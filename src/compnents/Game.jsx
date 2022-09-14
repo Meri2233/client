@@ -13,7 +13,6 @@ function Game({createRoom,data}) {
     let [curBoard, setCurrBoard] = useState(startingBoard);
     let [isXplaying, setIsXPlaying] = useState(true);
     let dummyBoard = JSON.parse(JSON.stringify(curBoard));
-    let [history, setHistory] = useState([[]]);
     let board = {};
 
     let hasXwon = () => {
@@ -51,7 +50,7 @@ function Game({createRoom,data}) {
         return false;
     }
 
-    let handleClick = (event, row, col) => {
+    let handleClick = ( row, col) => {
         dummyBoard[row][col] = isXplaying ? "X" : "O";
         let movesEl = document.querySelector(".moves");
 
