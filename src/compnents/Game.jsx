@@ -8,7 +8,7 @@ let move = 0;
 function Game({createRoom,data}) {
     useEffect(() => {
         createRoom();
-    },[])
+    },[createRoom])
 
     let [curBoard, setCurrBoard] = useState(startingBoard);
     let [isXplaying, setIsXPlaying] = useState(true);
