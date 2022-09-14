@@ -1,10 +1,15 @@
 import Board from "./Board"
 import { useState } from "react";
+import { useEffect } from "react";
 
 let startingBoard = new Array(3).fill(0).map((el) => new Array(3).fill(" "))
 let move = 0;
 
-function Game() {
+function Game({createRoom,data}) {
+    useEffect(() => {
+        createRoom();
+    },[])
+
     let [curBoard, setCurrBoard] = useState(startingBoard);
     let [isXplaying, setIsXPlaying] = useState(true);
     let dummyBoard = JSON.parse(JSON.stringify(curBoard));
@@ -47,50 +52,50 @@ function Game() {
     }
 
     let handleClick = (event, row, col) => {
-            dummyBoard[row][col] = isXplaying ? "X" : "O";
-            let movesEl = document.querySelector(".moves");
+        dummyBoard[row][col] = isXplaying ? "X" : "O";
+        let movesEl = document.querySelector(".moves");
 
-            setCurrBoard(dummyBoard);
-            setIsXPlaying(!isXplaying);
+        setCurrBoard(dummyBoard);
+        setIsXPlaying(!isXplaying);
 
-            let newMessage = document.querySelector(".status");
+        let newMessage = document.querySelector(".status");
 
-            if (hasXwon()) {
-                newMessage.innerHTML = "<b>X has won</b>";
-                move = 0;
-                setTimeout(() => {
-                    setCurrBoard(startingBoard);
-                    newMessage.innerHTML = "<b>Game in Progress</b>"
-                    movesEl.innerHTML = "";
+        if (hasXwon()) {
+            newMessage.innerHTML = "<b>X has won</b>";
+            move = 0;
+            setTimeout(() => {
+                setCurrBoard(startingBoard);
+                newMessage.innerHTML = "<b>Game in Progress</b>"
+                movesEl.innerHTML = "";
 
-                }, 500);
-            }
+            }, 500);
+        }
 
-            else if (hasYwon()) {
-                newMessage.innerHTML = "<b>O has won</b>";
-                move = 0;
-                setTimeout(() => {
-                    setCurrBoard(startingBoard);
-                    newMessage.innerHTML = "<b>Game in Progress</b>"
-                    movesEl.innerHTML = "";
+        else if (hasYwon()) {
+            newMessage.innerHTML = "<b>O has won</b>";
+            move = 0;
+            setTimeout(() => {
+                setCurrBoard(startingBoard);
+                newMessage.innerHTML = "<b>Game in Progress</b>"
+                movesEl.innerHTML = "";
 
-                }, 500);
-            }
+            }, 500);
+        }
 
-            else if (isGameInProgress()) {
-                move++;
-                storeMoves(dummyBoard, move);
-            }
+        else if (isGameInProgress()) {
+            move++;
+            storeMoves(dummyBoard, move);
+        }
 
-            else {
-                newMessage.innerHTML = "<b>Game is drawn</b>";
-                move = 0;
-                setTimeout(() => {
-                    setCurrBoard(startingBoard);
-                    newMessage.innerHTML = "<b>Game in Progress</b>"
-                    movesEl.innerHTML = "";
-                }, 500);
-            }
+        else {
+            newMessage.innerHTML = "<b>Game is drawn</b>";
+            move = 0;
+            setTimeout(() => {
+                setCurrBoard(startingBoard);
+                newMessage.innerHTML = "<b>Game in Progress</b>"
+                movesEl.innerHTML = "";
+            }, 500);
+        }
     }
 
     let goToMove = (event) => {
@@ -113,6 +118,7 @@ function Game() {
         <div className="game-container">
             <div className="gamearea">
                 <h1>Tic-Tac-Toe</h1>
+                <p>Room Code is: {data}</p>
                 <p><b>Current Player: {isXplaying ? "X" : "O"}</b></p>
                 <Board curBoard={curBoard} handleClick={handleClick} />
                 <p className="status"><b>Game in Progress</b></p>
